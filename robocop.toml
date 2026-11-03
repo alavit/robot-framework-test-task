@@ -1,0 +1,7 @@
+[tool.robocop]
+exclude = ["results/"]
+target-version = "7"
+
+[tool.robocop.format]
+space-count = 4
+line-ending = "auto"

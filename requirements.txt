@@ -1,0 +1,4 @@
+robotframework==7.5.1
+robotframework-browser==21.0.0
+robotframework-robocop==9.1.2
+pytest==9.2.0
