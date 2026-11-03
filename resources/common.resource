@@ -11,6 +11,7 @@ Resource         checkout.resource
 *** Variables ***
 ${BASE_URL}    https://www.shop-apotheke.com
 ${HEADLESS}    ${True}
+${DENY_COOKIES_BUTTON}    button[data-testid="uc-deny-all-button"]
 
 
 *** Keywords ***
@@ -24,17 +25,15 @@ Start Isolated Guest Session
     Get Element States    [data-qa-id="cart-empty-container"]    contains    visible
     Click    a[data-qa-id="brand-log"]:visible
     Get Url    ==    ${BASE_URL}/
-    Wait For Load State    load
 
 Handle Cookie Consent If Present
-    [Documentation]    Wait for the consent prompt or search box and deny consent if prompted.
-    # Usercentrics renders inside a shadow root; absence is valid for this session.
-    Wait For Elements State
-    ...    button[data-testid="uc-deny-all-button"]:visible, input[data-qa-id="search-box-query"]:visible >> nth=0
-    ...    visible
-    ...    timeout=10s
-    ${present}=    Get Element Count    button[data-testid="uc-deny-all-button"]:visible
-    IF    ${present} > 0    Click    button[data-testid="uc-deny-all-button"]
+    [Documentation]    Allow a late consent prompt to appear and dismiss it when visible.
+    TRY
+        Wait For Elements State    ${DENY_COOKIES_BUTTON}    visible    timeout=5s
+    EXCEPT    *Timeout*    type=GLOB
+        RETURN
+    END
+    Click    ${DENY_COOKIES_BUTTON}
 
 Close Guest Session
     [Documentation]    Capture failure details when possible, then close the context and browser.
@@ -42,8 +41,8 @@ Close Guest Session
         Run Keyword And Warn On Failure    Log Current Page URL
         Run Keyword And Warn On Failure    Take Screenshot
     END
-    Run Keyword And Warn On Failure    Close Context
-    Run Keyword And Warn On Failure    Close Browser
+    Close Context
+    Close Browser
 
 Log Current Page URL
     [Documentation]    Log the current URL to help diagnose a failed test.

@@ -11,8 +11,7 @@ Open Basket
 Basket Row
     [Documentation]    Return the basket row selector for the given PZN.
     [Arguments]    ${pzn}
-    VAR    ${row}=    [data-qa-id="cart-entry-product"]:has([data-pzn="${pzn}"])
-    RETURN    ${row}
+    RETURN    [data-qa-id="cart-entry-product"]:has([data-pzn="${pzn}"])
 
 Basket Quantity Should Be
     [Documentation]    Verify the displayed quantity for a product.
@@ -28,6 +27,8 @@ Increase Basket Quantity From One To Two
     [Documentation]    Click once to increase the quantity and verify the result.
     [Arguments]    ${pzn}
     ${row}=    Basket Row    ${pzn}
+    # The basket can render its quantity controls before their click handlers are ready.
+    Wait For Load State    load
     Click    ${row} button[data-qa-id="form-cart-entry-increaseQuantity-button"]
     Basket Quantity Should Be    ${pzn}    2
 
