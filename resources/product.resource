@@ -1,18 +1,16 @@
 *** Settings ***
 Documentation    Product page checks and adding a product to the basket.
+
 Resource         libraries.resource
-Resource         basket.resource
 
 
 *** Keywords ***
-Add Product Once And Verify In Basket
-    [Documentation]    Verify the product, add it once, and check its basket quantity.
+Add Product Once
+    [Documentation]    Verify the product identity and default quantity, then add it once.
     [Arguments]    ${pzn}
     Get Element States    [data-qa-id="product-details-page"]    contains    visible
     Get Text    [data-qa-id="product-attribute-pzn"]    contains    ${pzn}
     Get Text    [data-qa-id="product-quantity-select"]    ==    1
     Click    button[data-qa-id="add-to-cart-button"]
-    # The intermediate cart link appears only after the add operation completes.
-    Click    a[data-qa-id="cart-button"].button-deprecated
-    Get Url    *=    /nx/cart/
-    Basket Quantity Should Be    ${pzn}    1
+    # Open the basket from the confirmation after the add operation completes.
+    Click    [data-qa-id="cartIntermediateDrawer"] a[data-qa-id="cart-button"]
