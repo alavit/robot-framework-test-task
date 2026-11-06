@@ -64,3 +64,16 @@ The assignment does not define which website price to compare; the search sugges
 ## Execution record
 
 Earlier exploratory runs exposed navigation and quantity-control timing issues that were corrected before the two passing runs. A fresh run can still fail for environmental or storefront changes.
+
+## Continuous integration
+
+GitHub Actions runs unit tests, Robot lint and formatting checks, and a Robot dry run on pushes and pull requests. The dry run validates the test structure and keyword resolution without opening a browser or contacting the store. Run the same checks locally from the project root:
+
+```powershell
+.\.venv\Scripts\python -m pytest -q
+.\.venv\Scripts\robocop check tests resources
+.\.venv\Scripts\robocop format --check tests resources
+.\.venv\Scripts\python -m robot --dryrun --outputdir results tests/e2e
+```
+
+The public-store E2E test is not run by this workflow.

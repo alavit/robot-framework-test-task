@@ -25,6 +25,7 @@ Guest Compares Panthenol Price Before Checkout
     Open Suggested Product    ${PANTHENOL}
     Add Product Once    ${PANTHENOL}
 
+    Basket Should Contain Exactly Products    2
     Basket Quantity Should Be    ${PANTHENOL}    1
     Increase Basket Quantity By One    ${IBUPROFEN}    1
     ${basket_raw}    ${basket_price}=    Get Basket Line Total    ${PANTHENOL}

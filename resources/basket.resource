@@ -9,6 +9,11 @@ Open Basket
     [Documentation]    Open the basket from the visible cart button.
     Click    header a[data-qa-id="cart-button"]:visible
 
+Basket Should Contain Exactly Products
+    [Documentation]    Verify that the basket has the expected number of product rows.
+    [Arguments]    ${expected_count}
+    Get Element Count    [data-qa-id="cart-entry-product"]    ==    ${expected_count}
+
 Basket Row
     [Documentation]    Return the basket row selector for the given PZN.
     [Arguments]    ${pzn}
