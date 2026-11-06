@@ -1,5 +1,6 @@
 *** Settings ***
 Documentation    Search suggestions and their displayed selling prices.
+
 Resource         libraries.resource
 
 
@@ -12,15 +13,18 @@ Find Product Suggestion
     [Documentation]    Search for a product by PZN.
     [Arguments]    ${pzn}
     Click    ${SEARCH_BOX}
-    Get Element States    text="Beliebte Produkte"    contains    visible
+    Wait For Elements State    ${SEARCH_BOX}    focused
+    Wait For Elements State    [data-qa-id="suggest-list"]    visible
     Fill Text    ${SEARCH_BOX}    ${pzn}
+    ${suggestion}=    Suggestion Selector    ${pzn}
+    Wait For Elements State    ${suggestion}    visible
 
 Get Search Selling Price
     [Documentation]    Return the raw and parsed selling price from the product suggestion.
     [Arguments]    ${pzn}
     ${suggestion}=    Suggestion Selector    ${pzn}
     VAR    ${prices}=    ${suggestion} [data-qa-id="product-prices-list-in-suggest"]
-    ${raw}=    Get Text    ${prices} >> xpath=./div[starts-with(normalize-space(text()), "€")]
+    ${raw}=    Get Text    ${prices} > div:first-child
     ${price}=    Parse Euro Price    ${raw}
     Log    Search price for PZN ${pzn}: raw="${raw}", normalized=${price} EUR    console=True
     RETURN    ${raw}    ${price}
