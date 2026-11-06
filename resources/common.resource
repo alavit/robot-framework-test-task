@@ -9,8 +9,8 @@ Resource         checkout.resource
 
 
 *** Variables ***
-${BASE_URL}    https://www.shop-apotheke.com
-${HEADLESS}    ${True}
+${BASE_URL}               https://www.shop-apotheke.com
+${HEADLESS}               ${True}
 ${DENY_COOKIES_BUTTON}    button[data-testid="uc-deny-all-button"]
 
 
@@ -18,7 +18,7 @@ ${DENY_COOKIES_BUTTON}    button[data-testid="uc-deny-all-button"]
 Start Isolated Guest Session
     [Documentation]    Open a fresh browser context and verify the guest basket is empty.
     New Browser    chromium    headless=${HEADLESS}
-    New Context    viewport={'width': 1440, 'height': 900}    locale=de-DE
+    New Context    viewport={'width': 1440, 'height': 900}    locale=de-DE    tracing=True
     New Page    ${BASE_URL}/    wait_until=domcontentloaded
     Handle Cookie Consent If Present
     Open Basket

@@ -1,5 +1,6 @@
 *** Settings ***
 Documentation    Checkout navigation up to the authentication page.
+
 Resource         libraries.resource
 
 
